@@ -279,6 +279,15 @@ int digitArray[][21][3] = {
     wht, off, wht,
     wht, wht, wht,
     wht, off, wht
+  },
+  {
+    off, off, off, // -
+    off, off, off,
+    off, off, off,
+    wht, wht, wht,
+    off, off, off,
+    off, off, off,
+    off, off, off
   }
 };
 
@@ -539,6 +548,14 @@ int displayTemperature() {
   // convert decimal temperature into digits
   int tempUnits = temp % 10;
   int tempTens = (temp - tempUnits) / 10;
+
+// if negative temperature, display temperature and return from fcn. this has the obvious downside of not displaying the tens digit, so only negative numbers up to -9 degC can be displayed. In England, this is an acceptable trade-off given the rarity.
+  if (temp < 0) {
+    displayDigit(6, 14); // display a dash for -ve sign
+    displayDigit(10, tempUnits); // display temperature digit 2
+    displaySymbol(14, 0); // display degrees C symbol
+    return startFcnTime;
+  }
 
   // if 1st digit non zero, display. prevents case of, e.g. temperature of 8 degC reading 08 degC, which looks bad
   if (tempTens != 0) {
